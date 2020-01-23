@@ -8,6 +8,16 @@ class Message {
         this.dispFromTarg = createVector(0,0)
         this.color = [255, 0, 0]
         this.updates = []
+        this.received = false
+    }
+
+    checkArrival() {
+        if(this.isInside() && this.vel.mag() < 0.1) {
+            if(this.received == false) {
+                this.receiver.acceptMessage(this)
+                this.received = true
+            }
+        }
     }
 
     update() {

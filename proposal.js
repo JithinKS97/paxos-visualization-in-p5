@@ -1,20 +1,10 @@
 class Proposal extends Message {
     constructor(sender, receiver, content) {
         super(sender, receiver)
-        this.received = false
         this.content = content
-        this.updates.push(this.checkDestroyStatus)
         this.isDestroying = false
-        this.shouldDestroy = false
-    }
-    
-    handleArrival() {
-        if(this.isInside() && this.vel.mag() < 0.1) {
-            if(this.received == false) {
-                this.receiver.acceptMessage(this)
-                this.received = true
-            }
-        }
+        this.finishedDestruction = false
+        this.updates.push(this.carryOutDestruction)
     }
 
     reject() {
@@ -22,7 +12,11 @@ class Proposal extends Message {
         this.destroy()
     }
 
-    checkDestroyStatus = () => {
+    destroy() {
+        this.isDestroying = true
+    }
+
+    carryOutDestruction = () => {
         if(this.isDestroying) {
             let transparency = map(this.pos.y, this.receiver.y, this.receiver.y + this.dispFromTarg.y, 255, 0)
             this.color = [
@@ -32,12 +26,8 @@ class Proposal extends Message {
                 transparency
             ]
             if(transparency<0.1) {
-                this.shouldDestroy = true
+                this.finishedDestruction = true
             }
         }
-    }
-
-    destroy() {
-        this.isDestroying = true
     }
 }

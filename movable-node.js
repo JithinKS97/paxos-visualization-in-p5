@@ -5,6 +5,7 @@ class MovableNode {
       this.y = y
       this.d = 20
       this.isMovable = false
+      this.updates = []
     }
     
     display() {
@@ -18,7 +19,9 @@ class MovableNode {
         this.x += mouseX - pmouseX
         this.y += mouseY - pmouseY
       }
-      ellipse(this.x, this.y, this.d, this.d)    
+      ellipse(this.x, this.y, this.d, this.d)
+      
+      this.updates.map(update => update())
     }
     
     isMouseHovering() {
