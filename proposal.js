@@ -1,10 +1,10 @@
 class Proposal extends Message {
-    constructor(sender, receiver, content) {
-        super(sender, receiver)
-        this.content = content
+    constructor(sender, receiver, content, color) {
+        super(sender, receiver, content)
         this.isDestroying = false
-        this.finishedDestruction = false
+        this.shouldDestroy = false
         this.updates.push(this.carryOutDestruction)
+        this.color = color
     }
 
     reject() {
@@ -26,8 +26,12 @@ class Proposal extends Message {
                 transparency
             ]
             if(transparency<0.1) {
-                this.finishedDestruction = true
+                this.shouldDestroy = true
             }
         }
+    }
+
+    accept() {
+        this.setDispFromTarget(createVector(0,0))
     }
 }

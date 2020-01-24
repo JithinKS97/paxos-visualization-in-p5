@@ -6,6 +6,7 @@ class MovableNode {
       this.d = 20
       this.isMovable = false
       this.updates = []
+      this.color = [0,0,0]
     }
     
     display() {
@@ -13,7 +14,7 @@ class MovableNode {
       if((this.isMouseHovering() || this.isMovable)) {
         fill(255)
       } else {
-        fill(0)
+        fill(...this.color)
       }
       if(this.isMovable) {
         this.x += mouseX - pmouseX

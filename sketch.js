@@ -1,15 +1,13 @@
-let processes = [], clients = [], proposals = []
+let processes = [], clients = [], proposals = [], messages = [],
+send, seqNo = 11
 
 function setup() {
   createCanvas(640, 400);
-  clients.push(new MovableNode(width/4, height/2))
-  processes.push(new Process(width/2, height/2, 0))
-  processes.push(new Process(width/1.5, height/4, 1))
-  processes.push(new Process(width/1.5, 3*height/4, 2))
-  proposals.push(new Proposal(clients[0], processes[0], {
-    type: 'prepare',
-    seqNo: 11
-  }))
+
+  clients.push(new Client(width/5, 3*height/4, 0))
+  clients.push(new Client(width/5, height/4, 1))
+  
+  createNodesInCircle(10, width/5)
 }
 
 function draw() {
@@ -28,11 +26,20 @@ function draw() {
     proposals[i].checkArrival()
     destroy(proposals, i)
   }
+  for(let i=0;i<messages.length;i++) {
+    messages[i].display()
+    messages[i].update()
+    messages[i].checkArrival()
+    destroy(messages, i)
+  }
 }
 
 function mouseReleased() {
-  for(let node of nodes) {
-    node.isMovable = false
+  for(let process of processes) {
+    process.isMovable = false
+  }
+  for(let client of clients) {
+    client.isMovable = false
   }
   Node.isAnyMoving = false
 }
@@ -40,5 +47,18 @@ function mouseReleased() {
 function destroy(items, index) {
   if(items[index].shouldDestroy) {
     items.splice(index, 1)
+  }
+}
+
+function createNodesInCircle(noOfNodes, radius) {
+  for (let i = 0; i < noOfNodes; i++) {
+    processes.push(
+      new Process(
+        width / 1.7 + radius * sin( i * (2*PI/noOfNodes)),
+        height / 2 + radius * cos(i * (2*PI/noOfNodes)),
+        i,
+        10
+      )
+    )
   }
 }

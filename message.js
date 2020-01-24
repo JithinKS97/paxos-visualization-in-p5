@@ -1,14 +1,16 @@
 class Message {
-    constructor(sender, receiver) {
+    constructor(sender, receiver, content) {
         this.pos = createVector(sender.x, sender.y)
         this.vel = createVector(0, 0)
         this.acc = createVector(0,0)
         this.d = 10
         this.receiver = receiver
+        this.sender = sender
         this.dispFromTarg = createVector(0,0)
-        this.color = [255, 0, 0]
+        this.color = [0, 255, 0]
         this.updates = []
         this.received = false
+        this.content = content
     }
 
     checkArrival() {
@@ -22,8 +24,8 @@ class Message {
 
     update() {
         this.determineAcc()
-        this.vel.limit(0.5)
         this.vel.add(this.acc)
+        this.vel.limit(1.5)
         this.pos.add(this.vel)
         this.updates.map(update => update())
     }
@@ -56,11 +58,13 @@ class Message {
 
     display() {
         fill(...this.color)
-        noStroke()
+        stroke(0,0,0, this.color[3])
         ellipse(this.pos.x, this.pos.y, this.d, this.d)
+        stroke(0)
     }
 
     setDispFromTarget(disp) {
         this.dispFromTarg = disp
     }
+    
 }

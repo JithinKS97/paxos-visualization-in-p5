@@ -5,3 +5,6 @@ html, body {
 canvas {
   display: block;
 }
+button {
+  position:relative;
+}
